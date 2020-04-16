@@ -35,12 +35,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: myapp
+  name: mysql-service
   namespace: blog
 spec:
   selector:
     app: mysql-db
   ports:
-  - port: 3306
+  - port: 33306
     targetPort: 3306
 
