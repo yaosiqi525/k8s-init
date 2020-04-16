@@ -15,18 +15,32 @@ spec:
       containers:
       - name: mysql-db
         image: mysql:5.7
-        environment:
-        - MYSQL_ROOT_PASSWORD=admin
         resources:
           limits:
             memory: "1Gi"
             cpu: "500m"
         ports:
         - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: admin
         volumeMounts:
         - mountPath: /var/lib/mysql
           name: sql-data
       volumes:
       - hostPath:
-          path: /root/mysql
+          path: /data/mysql
         name: sql-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: blog
+spec:
+  selector:
+    app: mysql-db
+  ports:
+  - port: 3306
+    targetPort: 3306
+
