@@ -1,0 +1,1 @@
+kubectl create secret docker-registry aliyun-docker --docker-server=registry.cn-shenzhen.aliyuncs.com --docker-username=18575519490 --docker-password=Yaosiqi525 --docker-email=499294893@qq.com -n blog
