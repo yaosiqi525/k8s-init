@@ -1,34 +1,48 @@
 apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
-  name: blog-dep
+  name: web-pod
   namespace: blog
   labels:
-    app: blog-dep
+    app: web-pod
 spec:
+  selector:
+    matchLabels:
+      app: web-pod
+  replicas: 1
   strategy:
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
     type: RollingUpdate
-  replicas: 1
-  selector:
-    matchLabels:
-      app: web-pod
   template:
     metadata:
       labels:
         app: web-pod
     spec:
       containers:
-      - name: web-c
+      - name: web-pod
         image: registry.cn-shenzhen.aliyuncs.com/dtango/blog-web:prod
         imagePullPolicy: Always
         resources:
           limits:
-            memory: "50Mi"
-            cpu: "100m"
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 80
       imagePullSecrets:
         - name: aliyun-docker
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: web-svc
+  namespace: blog
+spec:
+  selector:
+    app:  web-pod
+  type: ClusterIP
+  ports:
+  - name:  tcp
+    port:  80
+    targetPort:  80
