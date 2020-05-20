@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  mysql-master
+  labels:
+    name:  mysql-master
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name:  mysql-master
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: mysql-master
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: "2G"
+          requests:
+            cpu: "512m"
+            memory: "1G"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Yaosiqi525
+        - name: MYSQL_REPLICATION_USER
+          value: yaosiqi
+        - name: MYSQL_REPLICATION_PASSWORD
+          value: 416759511a      
+        ports:
+        - containerPort:  3306
+          name:  mysql-master
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: data
+      volumes:
+        - hostPath: /data/mysql
+          name: data
+      restartPolicy: Always
+      imagePullPolicy: Always
