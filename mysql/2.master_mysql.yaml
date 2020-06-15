@@ -1,11 +1,15 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  mysql-master
+  namespace: blog
   labels:
     name:  mysql-master
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      name:  mysql-master
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,11 +25,11 @@ spec:
         name: mysql-master
         resources:
           limits:
-            cpu: "2000m"
-            memory: "2G"
+            cpu: "1000m"
+            memory: "1G"
           requests:
             cpu: "512m"
-            memory: "1G"
+            memory: "0.5G"
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: Yaosiqi525
@@ -40,7 +44,7 @@ spec:
         - mountPath: /var/lib/mysql
           name: data
       volumes:
-        - hostPath: /data/mysql
-          name: data
+        - name: data
+          hostPath: 
+            path: /data/mysql
       restartPolicy: Always
-      imagePullPolicy: Always

@@ -170,5 +170,7 @@ spec:
       storageClassName: nfs
       accessModes: ["ReadWriteMany"]
       resources:
-        requests:
+        limits:
           storage: 10Gi
+        requests:
+          storage: 5Gi
