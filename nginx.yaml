@@ -1,0 +1,47 @@
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: ng-pod
+  namespace: common
+  labels:
+    app: ng-pod
+spec:
+  selector:
+    matchLabels:
+      app: ng-pod
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ng-pod
+    spec:
+      containers:
+      - name: ng-pod
+        image: nginx
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ng-svc
+  namespace: common
+spec:
+  selector:
+    app:  ng-pod
+  type: NodePort
+  ports:
+  - name:  tcp
+    port:  80
+    targetPort:  80
+    nodePort: 31000

@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dashboard-svc-np
+  namespace: kubernetes-dashboard
+spec:
+  selector:
+    app.kubernetes.io/component: app
+    app.kubernetes.io/instance: kubernetes-dashboard
+    app.kubernetes.io/name: kong
+  type: NodePort
+  ports:
+  - name:  tcp
+    port:  80
+    targetPort:  80
+    nodePort: 30001
+  - name:  tcp-ssl
+    port:  443
+    targetPort:  443
+    nodePort: 30003

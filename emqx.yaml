@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: emqx-svc-np
+  namespace: common
+spec:
+  selector:
+    app.kubernetes.io/instance: my-emqx
+    app.kubernetes.io/name: emqx
+  type: NodePort
+  ports:
+  - name:  mqtt
+    port:  1883
+    targetPort:  1883
+    nodePort: 31883
+  - name:  mqttssl
+    port:  8883
+    targetPort:  8883
+    nodePort: 31884
+  - name:  ws
+    port:  8083
+    targetPort:  8083
+    nodePort: 31885
+  - name:  wss
+    port:  8084
+    targetPort:  8084
+    nodePort: 31886
+  - name:  dashboard
+    port:  18083
+    targetPort:  18083
+    nodePort: 31887
+  - name:  ekka
+    port:  4370
+    targetPort:  4370
+    nodePort: 31888
